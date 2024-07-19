@@ -1,14 +1,15 @@
-const movies = require("../models/movies.json");
-const path = require("node:path");
-const fs = require("node:fs");
+const dataSource = require("../services/datasource.js");
 
 const movieController = {
-  getAll(req, res) {
+  movies: null,
+  async getAll(req, res) {
+    this.movies = await dataSource.load();
     res.render("movies", { movies });
   },
-  getById(req, res) {
+  async getById(req, res) {
+    this.movies = await dataSource.load();
     const { id } = req.params;
-    const movie = movies.find((movie) => movie.id === id);
+    const movie = this.movies.find((movie) => movie.id === id);
     res.render("movieDetail", { movie });
   },
   getByTitle(req, res) {
@@ -24,7 +25,7 @@ const movieController = {
     const { title } = req.body;
     res.send(`Create movie with this data: ${title}`);
   },
-  updateOne(req, res) {
+  async updateOne(req, res) {
     const { id } = req.params;
     const { title, year, duration, director, poster, genre, rate, synopsis } =
       req.body;
@@ -43,28 +44,16 @@ const movieController = {
           }
         : movie
     );
-
-    // Data to write to the file
-    const data = JSON.stringify(updatedMovies);
-
-    // file path
-    const filePath = path.resolve(__dirname, "../models/movies.json");
-
-    fs.writeFile(filePath, data, (err) => {
-      if (err) {
-        console.error("Error writing to file:", err);
-      } else {
-        const movie = updatedMovies.find((m) => m.id === id);
-        res.render("movieDetail", { movie });
-      }
-    });
+    await dataSource.save(updatedMovies);
+    res.redirect(`/movies/${id}`);
   },
-  deleteOne(req, res) {
+  async deleteOne(req, res) {
     const { id } = req.params;
-    const filteredMovies = movies.filter((movie) => {
-      movie.id !== id;
+    const filteredMovies = this.movies.filter((movie) => {
+      return movie.id !== id;
     });
-    res.send(`Delete the movie with id: #${id}`);
+    await dataSource.save(filteredMovies);
+    res.redirect("/movies");
   },
 };
 module.exports = movieController;
