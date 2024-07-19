@@ -4,7 +4,7 @@
   <body class="container">
     <%- include('partials/navbar') %>
 
-    <form method="post" action="/movies" class="mt-5 col-5">
+    <form method="post" action="/movies" class="mt-5 col-5" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -48,11 +48,11 @@
       <div class="mb-3">
         <label for="poster" class="form-label">Poster</label>
         <input
-          type="text"
+          type="file"
           class="form-control"
           id="poster"
           name="poster"
-          placeholder="Poster URL..."
+          accept="image/*"
         />
       </div>
       <div class="mb-3">

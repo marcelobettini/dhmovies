@@ -4,7 +4,7 @@
   <body class="container">
     <%- include('partials/navbar') %>
 
-    <form method="post" action="/movies/<%= movie.id %>?_method=put" class="mt-5 col-5">
+    <form method="post" action="/movies/<%= movie.id %>?_method=put" class="mt-5 col-5" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -52,13 +52,12 @@
       <div class="mb-3">
         <label for="poster" class="form-label">Poster</label>
         <input
-          type="text"
+          type="file"
           class="form-control"
           id="poster"
           name="poster"
-          placeholder="Poster URL..."
-          value="<%= movie.poster %>"
         />
+        <input type="hidden" name="currentPoster" value="<%= movie.poster %>">
       </div>
       <div class="mb-3">
         <label for="genre" class="form-label">Genres</label>
