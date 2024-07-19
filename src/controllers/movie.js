@@ -18,12 +18,30 @@ const movieController = {
   },
   getUpdateForm(req, res) {
     const { id } = req.params;
-    const movie = movies.find((movie) => movie.id === id);
+    const movie = this.movies.find((movie) => movie.id === id);
     res.render("movieEdit", { movie });
   },
-  createOne(req, res) {
-    const { title } = req.body;
-    res.send(`Create movie with this data: ${title}`);
+  getAddForm(req, res) {
+    res.render("movieAdd");
+  },
+  async createOne(req, res) {
+    const { title, year, duration, director, poster, genre, rate, synopsis } =
+      req.body;
+    const newMovie = {
+      id: crypto.randomUUID(),
+      title,
+      year,
+      duration,
+      director,
+      poster,
+      genre: genre.split(", "),
+      rate,
+      synopsis,
+    };
+    this.movies = await dataSource.load();
+    this.movies.push(newMovie);
+    await dataSource.save(movies);
+    res.redirect(`/movies`);
   },
   async updateOne(req, res) {
     const { id } = req.params;
@@ -38,7 +56,7 @@ const movieController = {
             duration,
             director,
             poster,
-            genre: genre.split(" - "),
+            genre: genre.split(", "),
             rate,
             synopsis,
           }

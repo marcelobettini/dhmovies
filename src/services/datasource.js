@@ -10,7 +10,6 @@ const datasource = {
     return movies;
   },
   async save(data) {
-    console.log(data);
     const jsonData = JSON.stringify(data);
     await fs.writeFile(this.filePath, jsonData, "utf-8");
   },
