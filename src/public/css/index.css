@@ -1,0 +1,30 @@
+.movies-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1em;
+}
+.movie-card {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 3px 3px 6px;
+  border-radius: 7px;
+  padding: 0.3rem 0.8rem;
+  img {
+    height: 300px;
+    margin-bottom: 1rem;
+    border-radius: 7px;
+  }
+}
+.site-logo {
+  width: 100px;
+}
+.poster-shadow {
+  box-shadow: 3px 3px 6px rgb(21, 20, 20);
+}
+
+textarea {
+  resize: none !important;
+}

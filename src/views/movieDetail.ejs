@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <%- include('partials/head', {slug: "Movies List"}) %>
+  <body class="container">
+    <%- include('partials/navbar') %>
+    <div class="card mt-5" style="width: 36rem">
+      <div class="card-header">
+        <h5 class="card-title"><%= movie.title %></h5>
+      </div>
+      <div class="row card-body">
+        <div class="col-5">
+          <img
+            src="<%= movie.poster %>"
+            class="card-img poster-shadow"
+            alt="<%= movie.title %>"
+          />
+        </div>
+        <div class="col-7">
+          <ul>
+            <li>Directed by: <%= movie.director %></li>
+            <li>Released in: <%= movie.year %></li>
+            <li>Duration: <%= movie.duration %> minutes</li>
+            <li>Rating: <%= movie.rate %></li>
+
+            <% if (movie.genre.length > 1) { %>
+            <li>Genres: <%= movie.genre.join(" - ") %></li>
+            <% } else { %>
+            <li>Genre: <%= movie.genre %></li>
+            <% } %>
+          </ul>
+          <p class="card-text"><%= movie.synopsis %></p>
+          <div class="btn-group" role="group">
+            <a href="/movies" class="btn btn-outline-secondary">Back</a>
+            <a
+              href="/movies/edit/<%= movie.id %>"
+              class="btn btn-outline-warning"
+              >Edit</a
+            >
+            <a
+              href="/movies"
+              class="btn btn-outline-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteConfirmModal"
+              >Delete</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Button trigger modal -->
+
+    <!-- Modal -->
+    <form
+      method="post"
+      action="/movies/<%= movie.id %>?_method=delete"
+      class="modal fade"
+      id="deleteConfirmModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteConfirmModalLabel">
+              <%= movie.title %>
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">Confirm Movie deletion?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>

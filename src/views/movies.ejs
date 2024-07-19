@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <%- include('partials/head', {slug: "Movies List"}) %>
+  <body class="container">
+    <%- include('partials/navbar') %>
+    <section class="movies-container">
+      <% movies.forEach(movie => { %>
+      <article class="movie-card">
+        <h3><%= movie.title %></h3>
+        <a href="/movies/<%= movie.id %>" title="see details">
+          <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
+        </a>
+      </article>
+      <% }) %>
+    </section>
+  </body>
+</html>
