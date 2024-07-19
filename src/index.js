@@ -16,8 +16,12 @@ app.use(express.json());
 app.use(methodOverride("_method"));
 
 app.get("/", (req, res) => res.render("home"));
+app.get("/about", (req, res) => res.render("about"));
 app.use("/movies", movieRouter);
 app.get("/health", (req, res) => res.status(200));
+app.use((req, res) => {
+  res.status(404).render("not-found");
+});
 
 app.listen(port, (err) =>
   console.log(
