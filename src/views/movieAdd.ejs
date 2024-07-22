@@ -86,18 +86,31 @@
       </div>
       <div class="mb-3">
         <label for="genre" class="form-label">Genres</label>
-        <input
-          type="text"
-          class="form-control"
-          id="genre"
-          name="genre"
-          placeholder="If more than one, separate with commas..."
-        />
-         <% if (errorMap.genre) { %>
-           <p class="alert alert-danger">
-            <%= errorMap.genre %>
-           </p>
-           <% } %>
+        <div class="row">
+          <% const genres = [ "Action", "Adventure", "Animation", "Biography",
+          "Comedy", "Crime", "Documentary", "Drama", "Family", "Fantasy",
+          "History", "Horror", "Musical", "Mystery", "Romance", "Sci-Fi",
+          "Sport", "Thriller", "War", "Western" ]; %> <% genres.forEach((genre,
+          index) => { %>
+          <div class="col-xl-3 col-lg-4 col-sm-6">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="genre"
+                value="<%= genre %>"
+                id="genre-<%= genre %>"
+              />
+              <label class="form-check-label" for="genre-<%= genre %>">
+                <%= genre %>
+              </label>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+        <% if (errorMap.genre) { %>
+        <p class="alert alert-danger"><%= errorMap.genre %></p>
+        <% } %>
       </div>
       <div class="mb-3">
         <label for="rate" class="form-label">Rating</label>
