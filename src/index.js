@@ -5,6 +5,7 @@ const express = require("express");
 const methodOverride = require("method-override");
 //project modules
 const movieRouter = require("./routes/movie.js");
+const authRouter = require("./routes/auth.js");
 
 const port = process.env.PORT ?? 3000;
 const app = express();
@@ -18,6 +19,7 @@ app.use(methodOverride("_method"));
 app.get("/", (req, res) => res.render("home"));
 app.get("/about", (req, res) => res.render("about"));
 app.use("/movies", movieRouter);
+app.use("/auth", authRouter);
 app.get("/health", (req, res) => res.status(200));
 app.use((req, res) => {
   res.status(404).render("not-found");
