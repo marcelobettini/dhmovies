@@ -1,14 +1,15 @@
 const dataSource = require("../services/datasource.js");
+const constants = require("../constants.js");
 
 const movieController = {
   movies: null,
   async getAll(req, res) {
-    this.movies = await dataSource.load();
+    this.movies = await dataSource.load(constants.movies);
 
     res.render("movies", { movies });
   },
   async getById(req, res) {
-    this.movies = await dataSource.load();
+    this.movies = await dataSource.load(constants.movies);
     const { id } = req.params;
     const movie = this.movies.find((movie) => movie.id === id);
     res.render("movieDetail", { movie });
@@ -39,9 +40,9 @@ const movieController = {
       rate,
       synopsis,
     };
-    this.movies = await dataSource.load();
+    this.movies = await dataSource.load(constants.movies);
     this.movies.push(newMovie);
-    await dataSource.save(movies);
+    await dataSource.save(constants.movies, movies);
     res.redirect(`/movies`);
   },
 
@@ -69,7 +70,7 @@ const movieController = {
           }
         : movie
     );
-    await dataSource.save(updatedMovies);
+    await dataSource.save(constants.movies, updatedMovies);
     res.redirect(`/movies/${id}`);
   },
   async deleteOne(req, res) {
@@ -77,7 +78,7 @@ const movieController = {
     const { poster } = this.movies.find((m) => m.id === id);
 
     const filteredMovies = this.movies.filter((movie) => movie.id !== id);
-    await dataSource.save(filteredMovies);
+    await dataSource.save(constants.movies, filteredMovies);
     await dataSource.removefile(poster);
     res.redirect("/movies");
   },
