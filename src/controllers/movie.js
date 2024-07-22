@@ -4,6 +4,7 @@ const movieController = {
   movies: null,
   async getAll(req, res) {
     this.movies = await dataSource.load();
+
     res.render("movies", { movies });
   },
   async getById(req, res) {
@@ -22,7 +23,7 @@ const movieController = {
     res.render("movieEdit", { movie });
   },
   getAddForm(req, res) {
-    res.render("movieAdd");
+    res.render("movieAdd", { errors: [] });
   },
   async createOne(req, res) {
     const { filename } = req.file;
@@ -73,10 +74,11 @@ const movieController = {
   },
   async deleteOne(req, res) {
     const { id } = req.params;
-    const filteredMovies = this.movies.filter((movie) => {
-      return movie.id !== id;
-    });
+    const { poster } = this.movies.find((m) => m.id === id);
+
+    const filteredMovies = this.movies.filter((movie) => movie.id !== id);
     await dataSource.save(filteredMovies);
+    await dataSource.removefile(poster);
     res.redirect("/movies");
   },
 };
