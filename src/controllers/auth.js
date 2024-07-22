@@ -1,3 +1,5 @@
+const crypto = require("node:crypto");
+const passwordHash = require("../services/passwordHash.js");
 const authController = {
   getLoginForm(req, res) {
     res.render("auth/login");
@@ -5,13 +7,26 @@ const authController = {
   getRegisterForm(req, res) {
     res.render("auth/register");
   },
-  register() {
-    const { fullName, email, password, confirmPassword } = req.body;
+  async register(req, res) {
+    const { fullName, email, password } = req.body;
+    const hashedPass = await passwordHash.hide(password);
 
-    res.send("Creates a new user");
+    const newUser = {
+      id: crypto.randomUUID(),
+      fullName,
+      email,
+      password: hashedPass,
+    };
+    res.send(newUser);
   },
-  login() {
-    res.send("Log in a user");
+  async login(req, res) {
+    const hardcodedPass =
+      "$2b$10$gjISHqOXVw14mbblJ0HpuOli3atWYI9GxJZ9NFjXuSQcBaMFRJQJS";
+    const isPasswordOk = await passwordHash.show(
+      req.body.password,
+      hardcodedPass
+    );
+    res.send(isPasswordOk);
   },
 };
 

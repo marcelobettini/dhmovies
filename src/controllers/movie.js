@@ -35,7 +35,7 @@ const movieController = {
       duration,
       director,
       poster: `/poster/${filename}`,
-      genre: genre.split(", "),
+      genre,
       rate,
       synopsis,
     };

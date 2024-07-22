@@ -2,12 +2,14 @@
 <html>
   <%- include('partials/head', {slug: "Movie Update"}) %>
   <body class="container">
-    <%- include('partials/navbar') %>
-<% const errorMap={}%>
-     <% errors.forEach(err=> { %>
-      <% errorMap[err.path]=err.msg; %>
-       <% }); %>
-    <form method="post" action="/movies" class="mt-5 col-5" enctype="multipart/form-data">
+    <%- include('partials/navbar') %> <% const errorMap = {} %> <%
+    errors.forEach(err => { %> <% errorMap[err.path] = err.msg; %> <% }); %>
+    <form
+      method="post"
+      action="/movies"
+      class="mt-5 col-6"
+      enctype="multipart/form-data"
+    >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -18,11 +20,10 @@
           placeholder="It, Rocky, the Godfather..."
           autofocus
         />
-         <% if (errorMap.title) { %>
-           <p class="alert alert-danger">
-            <%= errorMap.title %>
-           </p>
-           <% } %>
+        <% if (errorMap.title) { %>
+        <p class="alert alert-danger"><%= errorMap.title %></p>
+        <% } %>
+      </div>
       <div class="mb-3">
         <label for="year" class="form-label">Year</label>
         <input
@@ -32,11 +33,9 @@
           name="year"
           placeholder="Year of release..."
         />
-         <% if (errorMap.year) { %>
-           <p class="alert alert-danger">
-            <%= errorMap.year %>
-           </p>
-           <% } %>
+        <% if (errorMap.year) { %>
+        <p class="alert alert-danger"><%= errorMap.year %></p>
+        <% } %>
       </div>
       <div class="mb-3">
         <label for="director" class="form-label">Director</label>
@@ -47,11 +46,9 @@
           name="director"
           placeholder="Pedro Almodóvar, John Ford..."
         />
-         <% if (errorMap.director) { %>
-           <p class="alert alert-danger">
-            <%= errorMap.director %>
-           </p>
-           <% } %>
+        <% if (errorMap.director) { %>
+        <p class="alert alert-danger"><%= errorMap.director %></p>
+        <% } %>
       </div>
       <div class="mb-3">
         <label for="duration" class="form-label">Duration</label>
@@ -60,13 +57,11 @@
           class="form-control"
           id="duration"
           name="duration"
-          placeholder="Lenght in minutes..."
+          placeholder="Length in minutes..."
         />
-         <% if (errorMap.duration) { %>
-           <p class="alert alert-danger">
-            <%= errorMap.duration %>
-           </p>
-           <% } %>
+        <% if (errorMap.duration) { %>
+        <p class="alert alert-danger"><%= errorMap.duration %></p>
+        <% } %>
       </div>
       <div class="mb-3">
         <label for="poster" class="form-label">Poster</label>
@@ -78,26 +73,36 @@
           accept="image/*"
         />
         <% if (errorMap.poster) { %>
-           <p class="alert alert-danger">
-            <%= errorMap.poster %>
-           </p>
-           <% } %>
-        
+        <p class="alert alert-danger"><%= errorMap.poster %></p>
+        <% } %>
       </div>
       <div class="mb-3">
         <label for="genre" class="form-label">Genres</label>
-        <input
-          type="text"
-          class="form-control"
-          id="genre"
-          name="genre"
-          placeholder="If more than one, separate with commas..."
-        />
-         <% if (errorMap.genre) { %>
-           <p class="alert alert-danger">
-            <%= errorMap.genre %>
-           </p>
-           <% } %>
+        <div class="row">
+          <% const genres = [ "Action", "Adventure", "Animation", "Biography",
+          "Comedy", "Crime", "Documentary", "Drama", "Family", "Fantasy",
+          "History", "Horror", "Musical", "Mystery", "Romance", "Sci-Fi",
+          "Sport", "Thriller", "War", "Western" ]; %> <% genres.forEach((genre,
+          index) => { %>
+          <div class="col-xl-3 col-lg-4 col-sm-6">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="genre"
+                value="<%= genre %>"
+                id="genre-<%= genre %>"
+              />
+              <label class="form-check-label" for="genre-<%= genre %>">
+                <%= genre %>
+              </label>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+        <% if (errorMap.genre) { %>
+        <p class="alert alert-danger"><%= errorMap.genre %></p>
+        <% } %>
       </div>
       <div class="mb-3">
         <label for="rate" class="form-label">Rating</label>
@@ -108,32 +113,29 @@
           name="rate"
           placeholder="A number from 0 to 10..."
         />
-         <% if (errorMap.rate) { %>
-           <p class="alert alert-danger">
-            <%= errorMap.rate %>
-           </p>
-           <% } %>
+        <% if (errorMap.rate) { %>
+        <p class="alert alert-danger"><%= errorMap.rate %></p>
+        <% } %>
       </div>
       <div class="mb-3">
         <label for="synopsis" class="form-label">Synopsis</label>
         <textarea
-          type="text"
           class="form-control"
           id="synopsis"
           name="synopsis"
           placeholder="Movie plot (no spoilers, please...)"
           rows="5"
-          ></textarea>
-           <% if (errorMap.synopsis) { %>
-           <p class="alert alert-danger">
-            <%= errorMap.synopsis %>
-           </p>
-           <% } %>
+        ></textarea>
+        <% if (errorMap.synopsis) { %>
+        <p class="alert alert-danger"><%= errorMap.synopsis %></p>
+        <% } %>
       </div>
-     <div class="btn-group" role="group">
-<a href="/movies" class="btn btn-outline-secondary">Back to movies</a>
-         <button type="submit" class="btn btn-outline-warning">Add New Movie</button>
-        </div>
+      <div class="btn-group" role="group">
+        <a href="/movies" class="btn btn-outline-secondary">Back to movies</a>
+        <button type="submit" class="btn btn-outline-warning">
+          Add New Movie
+        </button>
+      </div>
     </form>
   </body>
 </html>

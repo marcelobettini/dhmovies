@@ -3,7 +3,11 @@
   <%- include('../partials/head', {slug: "Register"}) %>
   <body class="container">
     <%- include('../partials/navbar') %>
-    <form class="col-12 col-sm-10 col-md-6 col-lg-5 mt-5">
+    <form
+      action="/auth/register"
+      class="col-12 col-sm-10 col-md-6 col-lg-5 mt-5"
+      method="post"
+    >
       <div class="mb-3">
         <label for="fullName" class="form-label">Full Name</label>
         <input type="text" class="form-control" id="fullName" name="fullName" />
