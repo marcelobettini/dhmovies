@@ -42,7 +42,7 @@ const movieController = {
     };
     this.movies = await dataSource.load(constants.movies);
     this.movies.push(newMovie);
-    await dataSource.save(constants.movies, movies);
+    await dataSource.save(constants.movies, this.movies);
     res.redirect(`/movies`);
   },
 

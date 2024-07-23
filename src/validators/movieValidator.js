@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, validationResult } = require("express-validator");
 const currYear = new Date().getFullYear();
 
 const movieValidationRules = [
@@ -25,4 +25,16 @@ const movieValidationRules = [
   }),
 ];
 
-module.exports = movieValidationRules;
+const movieValidator = [
+  ...movieValidationRules,
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      return next();
+    }
+
+    return res.status(400).render("movieAdd", { errors: errors.array() });
+  },
+];
+
+module.exports = movieValidator;
