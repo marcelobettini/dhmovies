@@ -75,9 +75,7 @@ const movieController = {
       return movie.id !== id;
     });
     await dataSource.save(filteredMovies);
-    if (poster !== "/poster/default.png") {
-      await dataSource.removeFile(poster);
-    }
+    await dataSource.removeFile(poster);
     res.redirect("/movies");
   },
 };
