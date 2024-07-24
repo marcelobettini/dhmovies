@@ -18,13 +18,14 @@ const movieController = {
     const { title } = req.query;
     res.send(`Get movie by title: ${title}`);
   },
-  getUpdateForm(req, res) {
+  async getUpdateForm(req, res) {
+    this.movies = await dataSource.load(constants.movies);
     const { id } = req.params;
     const movie = this.movies.find((movie) => movie.id === id);
-    res.render("movieEdit", { movie });
+    res.render("movieEdit", { movie, errors: [], genres: constants.genres });
   },
   getAddForm(req, res) {
-    res.render("movieAdd", { errors: [] });
+    res.render("movieAdd", { errors: [], genres: constants.genres });
   },
   async createOne(req, res) {
     const { filename } = req.file;
@@ -53,6 +54,8 @@ const movieController = {
     } else {
       poster = req.body.currentPoster;
     }
+    console.log("El poster es (nuevo o previo):");
+    console.log(poster);
     const { id } = req.params;
     const { title, year, duration, director, genre, rate, synopsis } = req.body;
     const updatedMovies = this.movies.map((movie) =>
@@ -64,7 +67,7 @@ const movieController = {
             duration,
             director,
             poster,
-            genre: genre.split(", "),
+            genre,
             rate,
             synopsis,
           }

@@ -1,4 +1,5 @@
 const { body, validationResult } = require("express-validator");
+const { genres } = require("../constants");
 const currYear = new Date().getFullYear();
 
 const movieValidationRules = [
@@ -17,12 +18,13 @@ const movieValidationRules = [
     .isFloat({ min: 0, max: 10 })
     .withMessage("Min value is 0 and max value is 10. You can use decimals."),
   body("synopsis").notEmpty(),
-  body("poster").custom((_value, { req }) => {
-    if (!req.file) {
-      throw new Error("Poster is required");
-    }
-    return true; // Indica que la validación pasó
-  }),
+  //Esta regla nos sirvió mientras quisimos que el poster fuese obligatorio
+  // body("poster").custom((_value, { req }) => {
+  //   if (!req.file) {
+  //     throw new Error("Poster is required");
+  //   }
+  //   return true; // Indica que la validación pasó
+  // }),
 ];
 
 const movieValidator = [
@@ -33,7 +35,9 @@ const movieValidator = [
       return next();
     }
 
-    return res.status(400).render("movieAdd", { errors: errors.array() });
+    return res
+      .status(400)
+      .render("movieAdd", { errors: errors.array(), genres });
   },
 ];
 
