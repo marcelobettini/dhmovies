@@ -13,6 +13,16 @@ const datasource = {
     const jsonData = JSON.stringify(data);
     await fs.writeFile(this.filePath, jsonData, "utf-8");
   },
+
+  async removeFile(filePath) {
+    const file = path.join(__dirname, "../public", filePath);
+    try {
+      await fs.unlink(file);
+      console.log(`file ${filePath} has been deleted.`);
+    } catch (err) {
+      console.error(err.message);
+    }
+  },
 };
 
 module.exports = datasource;
