@@ -16,10 +16,11 @@ const movieController = {
     const { title } = req.query;
     res.send(`Get movie by title: ${title}`);
   },
-  getUpdateForm(req, res) {
+  async getUpdateForm(req, res) {
+    const movies = await dataSource.load();
     const { id } = req.params;
-    const movie = this.movies.find((movie) => movie.id === id);
-    res.render("movieEdit", { movie });
+    const movie = movies.find((movie) => movie.id === id);
+    res.render("movieEdit", { movie, errors: [] });
   },
   getAddForm(req, res) {
     res.render("movieAdd", { errors: [] });
@@ -47,6 +48,7 @@ const movieController = {
   },
 
   async updateOne(req, res) {
+    const movies = await dataSource.load();
     let poster = "";
     if (req.file?.filename) {
       poster = `/poster/${req.file.filename}`;
