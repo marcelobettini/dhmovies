@@ -22,7 +22,7 @@ const movieController = {
     res.render("movieEdit", { movie });
   },
   getAddForm(req, res) {
-    res.render("movieAdd");
+    res.render("movieAdd", { errors: [], prevValues: {} });
   },
   async createOne(req, res) {
     const posterFilePath = req.file
@@ -46,10 +46,15 @@ const movieController = {
     res.redirect(`/movies`);
   },
   async updateOne(req, res) {
+    let poster = "";
+    if (req.file?.filename) {
+      poster = `/poster/${req.file.filename}`;
+    } else {
+      poster = req.body.currentPoster;
+    }
     const { id } = req.params;
-    const { title, year, duration, director, poster, genre, rate, synopsis } =
-      req.body;
-    const updatedMovies = movies.map((movie) =>
+    const { title, year, duration, director, genre, rate, synopsis } = req.body;
+    const updatedMovies = this.movies.map((movie) =>
       movie.id === id
         ? {
             id,
@@ -58,7 +63,7 @@ const movieController = {
             duration,
             director,
             poster,
-            genre: genre.split(", "),
+            genre,
             rate,
             synopsis,
           }

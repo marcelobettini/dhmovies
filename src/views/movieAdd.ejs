@@ -4,64 +4,85 @@
 
   <body class="container">
     <%- include('partials/navbar') %>
+      <% const errorMap={ } %>
+        <% errors.forEach(err=> {
+          errorMap[err.path] = err.msg
 
-      <form method="post" action="/movies" class="mt-5 col-6" enctype="multipart/form-data">
-        <div class="mb-3">
-          <label for="title" class="form-label">Title</label>
-          <input type="text" class="form-control" id="title" name="title" placeholder="It, Rocky, the Godfather..."
-            autofocus />
-          <div class="mb-3">
-            <label for="year" class="form-label">Year</label>
-            <input type="text" class="form-control" id="year" name="year" placeholder="Year of release..." />
-          </div>
-          <div class="mb-3">
-            <label for="director" class="form-label">Director</label>
-            <input type="text" class="form-control" id="director" name="director"
-              placeholder="Pedro Almodóvar, John Ford..." />
-          </div>
-          <div class="mb-3">
-            <label for="duration" class="form-label">Duration</label>
-            <input type="text" class="form-control" id="duration" name="duration" placeholder="Lenght in minutes..." />
-          </div>
-          <div class="mb-3">
-            <label for="poster" class="form-label">Poster</label>
-            <input type="file" class="form-control" id="poster" name="poster" />
-          </div>
-          <div class="mb-3">
-            <label for="genre" class="form-label">Genres</label>
-            <div class="row">
-              <% const genres=[ "Action" , "Adventure" , "Animation" , "Biography" , "Comedy" , "Crime" , "Documentary"
-                , "Drama" , "Family" , "Fantasy" , "History" , "Horror" , "Musical" , "Mystery" , "Romance" , "Sci-Fi"
-                , "Sport" , "Thriller" , "War" , "Western" ]; %>
-                <% genres.forEach((genre)=> {%>
-                  <div class="col-xl-3 col-lg-4 col-sm-6">
+          }) %>
 
-                    <div class="form-check">
-                      <input type="checkbox" name="genre" id="genre-<%= genre %>" value="<%= genre  %>"> %>
-                      <label for="genre-<%= genre %>">
-                        <%= genre %>
-                      </label>
-                    </div>
+
+          <form method="post" action="/movies" class="mt-5 col-6" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="title" name="title" placeholder="It, Rocky, the Godfather..."
+                autofocus value="<%= prevValues? prevValues.title: ''%>" />
+              <% if (errorMap.title) { %>
+                <p class="alert alert-danger">
+                  <%= errorMap.title %>
+                </p>
+
+                <% } %>
+                  <div class="mb-3">
+                    <label for="year" class="form-label">Year</label>
+                    <input type="text" class="form-control" id="year" name="year" placeholder="Year of release..."
+                      value="<%= prevValues? prevValues.year: ''%>" />
+                    <% if (errorMap.year) { %>
+                      <p class="alert alert-danger">
+                        <%= errorMap.year %>
+                      </p>
+
+                      <% } %>
                   </div>
-                  <%}); %>
-            </div>
+                  <div class="mb-3">
+                    <label for="director" class="form-label">Director</label>
+                    <input type="text" class="form-control" id="director" name="director"
+                      placeholder="Pedro Almodóvar, John Ford..." />
+                  </div>
+                  <div class="mb-3">
+                    <label for="duration" class="form-label">Duration</label>
+                    <input type="text" class="form-control" id="duration" name="duration"
+                      placeholder="Lenght in minutes..." />
+                  </div>
+                  <div class="mb-3">
+                    <label for="poster" class="form-label">Poster</label>
+                    <input type="file" class="form-control" id="poster" name="poster" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="genre" class="form-label">Genres</label>
+                    <div class="row">
+                      <% const genres=[ "Action" , "Adventure" , "Animation" , "Biography" , "Comedy" , "Crime"
+                        , "Documentary" , "Drama" , "Family" , "Fantasy" , "History" , "Horror" , "Musical" , "Mystery"
+                        , "Romance" , "Sci-Fi" , "Sport" , "Thriller" , "War" , "Western" ]; %>
+                        <% genres.forEach((genre)=> {%>
+                          <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="form-check">
+                              <input type="checkbox" name="genre" id="genre-<%= genre %>" value="<%= genre  %>"> %>
+                              <label for="genre-<%= genre %>">
+                                <%= genre %>
+                              </label>
+                            </div>
+                          </div>
+                          <%}); %>
+                    </div>
 
 
-          </div>
-          <div class="mb-3">
-            <label for="rate" class="form-label">Rating</label>
-            <input type="text" class="form-control" id="rate" name="rate" placeholder="A number from 0 to 10..." />
-          </div>
-          <div class="mb-3">
-            <label for="synopsis" class="form-label">Synopsis</label>
-            <textarea type="text" class="form-control" id="synopsis" name="synopsis"
-              placeholder="Movie plot (no spoilers, please...)" rows="5"></textarea>
-          </div>
-          <div class="btn-group" role="group">
-            <a href="/movies" class="btn btn-outline-secondary">Back to movies</a>
-            <button type="submit" class="btn btn-outline-warning">Add New Movie</button>
-          </div>
-      </form>
+                  </div>
+                  <div class="mb-3">
+                    <label for="rate" class="form-label">Rating</label>
+                    <input type="text" class="form-control" id="rate" name="rate"
+                      placeholder="A number from 0 to 10..." />
+                  </div>
+                  <div class="mb-3">
+                    <label for="synopsis" class="form-label">Synopsis</label>
+                    <textarea type="text" class="form-control" id="synopsis" name="synopsis"
+                      placeholder="Movie plot (no spoilers, please...)" rows="5"></textarea>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <a href="/movies" class="btn btn-outline-secondary">Back to movies</a>
+                    <button type="submit" class="btn btn-outline-warning">Add New Movie</button>
+                  </div>
+          </form>
   </body>
 
 </html>
