@@ -4,7 +4,6 @@ const movieController = {
   movies: null,
   async getAll(req, res) {
     this.movies = await dataSource.load();
-
     res.render("movies", { movies });
   },
   async getById(req, res) {
@@ -26,7 +25,9 @@ const movieController = {
     res.render("movieAdd", { errors: [] });
   },
   async createOne(req, res) {
-    const { filename } = req.file;
+    const posterFilePath = req.file
+      ? `/poster/${req.file.filename}`
+      : "/poster/default.png";
     const { title, year, duration, director, genre, rate, synopsis } = req.body;
     const newMovie = {
       id: crypto.randomUUID(),
@@ -34,8 +35,8 @@ const movieController = {
       year,
       duration,
       director,
-      poster: `/poster/${filename}`,
-      genre: genre.split(", "),
+      poster: posterFilePath,
+      genre,
       rate,
       synopsis,
     };
@@ -63,7 +64,7 @@ const movieController = {
             duration,
             director,
             poster,
-            genre: genre.split(", "),
+            genre,
             rate,
             synopsis,
           }

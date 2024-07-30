@@ -15,6 +15,7 @@ const datasource = {
   },
 
   async removefile(filePath) {
+    if (poster === "/poster/default.png") return; //early return on default poster
     const file = path.join(__dirname, "../public", filePath);
     try {
       await fs.unlink(file);

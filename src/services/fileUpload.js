@@ -1,7 +1,6 @@
 const path = require("node:path");
 const crypto = require("node:crypto");
 const multer = require("multer");
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const folder = path.join(__dirname, "../public/poster");
@@ -14,6 +13,5 @@ const storage = multer.diskStorage({
     cb(null, poster);
   },
 });
-
 const fileUpload = multer({ storage });
 module.exports = fileUpload;
