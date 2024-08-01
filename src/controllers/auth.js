@@ -22,7 +22,7 @@ const authController = {
         .status(409)
         .json({ success: false, message: "Email already in use" });
 
-    const hashedPass = await passwordHash.hide(password);
+    const hashedPass = await passwordHash.encrypt(password);
 
     const newUser = {
       id: crypto.randomUUID(),
@@ -35,13 +35,49 @@ const authController = {
     await datasource.save(constants.users, this.users);
     res.send(newUser);
   },
+
   async login(req, res) {
-    const isPasswordOk = await passwordHash.show(
-      req.body.password,
-      hardcodedPass
+    this.users = await datasource.load(constants.users);
+    const { email, password } = req.body;
+    const userFound = this.users.find((user) => user.email === email);
+    //check if email exists in DB
+    if (!userFound)
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid email or password" });
+
+    //check if password is correct
+    const isPasswordOk = await passwordHash.decrypt(
+      password,
+      userFound.password
     );
-    res.send(isPasswordOk);
+    if (!isPasswordOk)
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid email or password" });
+
+    req.session.user = { name: userFound.fullName, email: userFound.email };
+
+    // Guarda la sesión y luego imprime los datos del usuario
+    req.session.save((err) => {
+      if (err) {
+        console.error('Error saving session:', err);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+      }
+      res.redirect("/")
+    });
   },
+
+  logout(req, res) {
+    req.session.destroy(err => {
+      if (err) {
+        console.error(err.message)
+      } else {
+        res.clearCookie('connect.sid')
+        res.redirect("/")
+      }
+    })
+  }
 };
 
 module.exports = authController;
